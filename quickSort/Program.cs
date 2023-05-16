@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-class SelectionSort
+class QuickSort
 {
     static int comparisonCount = 0;
     static int movementCount = 0;
@@ -17,25 +17,34 @@ class SelectionSort
         return arr;
     }
 
-    static void SelectionSortAlgorithm(int[] arr)
+    static void QuickSortAlgorithm(int[] arr, int low, int high)
     {
-        int n = arr.Length;
-        for (int i = 0; i < n - 1; i++)
+        if (low < high)
         {
-            int minIndex = i;
-            for (int j = i + 1; j < n; j++)
+            int pivotIndex = Partition(arr, low, high);
+
+            QuickSortAlgorithm(arr, low, pivotIndex - 1);
+            QuickSortAlgorithm(arr, pivotIndex + 1, high);
+        }
+    }
+
+    static int Partition(int[] arr, int low, int high)
+    {
+        int pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++)
+        {
+            comparisonCount++;
+            if (arr[j] <= pivot)
             {
-                comparisonCount++;
-                if (arr[j] < arr[minIndex])
-                {
-                    minIndex = j;
-                }
-            }
-            if (minIndex != i)
-            {
-                Swap(arr, i, minIndex);
+                i++;
+                Swap(arr, i, j);
             }
         }
+
+        Swap(arr, i + 1, high);
+        return i + 1;
     }
 
     static void Swap(int[] arr, int i, int j)
@@ -49,10 +58,8 @@ class SelectionSort
     static void PrintArray(int[] arr)
     {
         int n = arr.Length;
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; ++i)
             Console.Write(arr[i] + " ");
-        }
         Console.WriteLine();
     }
 
@@ -65,7 +72,7 @@ class SelectionSort
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        SelectionSortAlgorithm(arr);
+        QuickSortAlgorithm(arr, 0, arr.Length - 1);
 
         stopwatch.Stop();
         Console.WriteLine("Array após a ordenação:");

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-class SelectionSort
+class InsertionSort
 {
     static int comparisonCount = 0;
     static int movementCount = 0;
@@ -17,33 +17,25 @@ class SelectionSort
         return arr;
     }
 
-    static void SelectionSortAlgorithm(int[] arr)
+    static void InsertionSortAlgorithm(int[] arr)
     {
         int n = arr.Length;
-        for (int i = 0; i < n - 1; i++)
+        for (int i = 1; i < n; i++)
         {
-            int minIndex = i;
-            for (int j = i + 1; j < n; j++)
+            int key = arr[i];
+            int j = i - 1;
+
+            while (j >= 0 && arr[j] > key)
             {
                 comparisonCount++;
-                if (arr[j] < arr[minIndex])
-                {
-                    minIndex = j;
-                }
+                arr[j + 1] = arr[j];
+                j--;
+                movementCount++;
             }
-            if (minIndex != i)
-            {
-                Swap(arr, i, minIndex);
-            }
-        }
-    }
 
-    static void Swap(int[] arr, int i, int j)
-    {
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-        movementCount++;
+            arr[j + 1] = key;
+            movementCount++;
+        }
     }
 
     static void PrintArray(int[] arr)
@@ -65,7 +57,7 @@ class SelectionSort
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        SelectionSortAlgorithm(arr);
+        InsertionSortAlgorithm(arr);
 
         stopwatch.Stop();
         Console.WriteLine("Array após a ordenação:");
